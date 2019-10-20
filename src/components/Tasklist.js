@@ -4,12 +4,13 @@ import TaskItem from './TaskItem';
  
 class TaskList extends React.Component {
  
+ 
   render() {
       const {tasks,a} = this.props
-    
-    
       const element = tasks.map((task,index)=>{
-                 return <TaskItem key={tasks.id} index={index} task={task}/>
+                 return <TaskItem   key={tasks.id} index={index} task={task}
+                  handleStatus = {this.props.handleStatus}
+               />
       })
      return (
         <div className="row mt-15">

@@ -70,9 +70,35 @@ class App extends React.Component {
     })
      localStorage.setItem('tasks',JSON.stringify(task))
   }
+  handleStatus = (id)=>{
+     let {task}= this.state
+     let index = this.findIndex(id)
+      console.log(index)
+     if(index!==-1){
+       task[index].status = !task[index].status  
+       this.setState({
+       task: task
+           })
+           localStorage.setItem('tasks',JSON.stringify(task))
+     }
+   
+  }
+  findIndex=(id)=>{
+    let {task} = this.state
+    let result = -1
+    task.forEach((task,index)=>{
+      if(task.id===id){
+       
+         return result =index
+      } 
+    })
+    return result;
+  }
   render() {
      const {task,displayTaskForm} = this.state ;
-     let elementtask  = displayTaskForm ? <TaskFrom onCloseForm={this.onCloseForm} onSubmit={this.onSubmit}/>  :''
+     let elementtask  = displayTaskForm ? <TaskFrom onCloseForm={this.onCloseForm} onSubmit={this.onSubmit}
+     
+     />  :''
     return (
       <div className="container">
         <div className="text-center"><h1>Quan ly cong viec</h1></div>
@@ -96,7 +122,7 @@ class App extends React.Component {
           </div>
         </div>
       
-              <TaskList tasks={task} a="cc" />
+              <TaskList tasks={task} handleStatus = {this.handleStatus}  />
         
       
       </div>

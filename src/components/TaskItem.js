@@ -1,10 +1,18 @@
 import React from 'react';
  
 class TaskItem extends React.Component {
- 
+  constructor(props){
+    super(props)
+    this.state={
+      lamnn:'ahihi'
+    }
+  }
+  handleStatus = ()=>{
+    this.props.handleStatus(this.props.task.id)
+  }
   render() {
       const {task,index} = this.props
-        
+       
     return (
         <>
           <tr>
@@ -12,7 +20,8 @@ class TaskItem extends React.Component {
             <td>{task.name}</td>
             <td className="text-center">
               <button className={ task.status ? "btn btn-primary" : "btn btn-warning" }type="button" 
-              onClick={this.changeStatus}>
+              onClick={this.handleStatus}
+             >
                  <span className="fa fa-danger mr-5">{ task.status ? "kick hoat" :"an"}</span>
               </button>
              
@@ -30,8 +39,6 @@ class TaskItem extends React.Component {
             </td>
           </tr>
          
-  
-
    </>
        
     )
