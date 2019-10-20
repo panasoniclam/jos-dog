@@ -81,7 +81,6 @@ class App extends React.Component {
            })
            localStorage.setItem('tasks',JSON.stringify(task))
      }
-   
   }
   findIndex=(id)=>{
     let {task} = this.state
