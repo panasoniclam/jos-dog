@@ -3,39 +3,49 @@ import './App.css'
 import  TaskFrom from './components/TaskForm'
 import Control from './components/Control'
 import TaskList from './components/Tasklist'
-import TaskItem from './components/TaskItem';
+
+ 
 class App extends React.Component {
   constructor(props){
     super(props)
     this.state={
       task:[] ,//id uniqur , name , status,
-      displayTaskForm:false
-
+      displayTaskForm:false,
+      editing: ''
+    }
+    
+  }
+   componentDidMount = ()=>{
+    if(localStorage && localStorage.getItem('task')){
+       let tasks = JSON.parse(localStorage.getItem('task'))
+       this.setState({
+           task :tasks 
+       })
     }
   }
-  onGenneratedata = ()=>{
-    let tasks =  [{
-      id:this.generateID(),
-      name:'learning react',
-      status:true
+  // onGenneratedata = ()=>{
+  //   let tasks =  [{
+  //     id:this.generateID(),
+  //     name:'learning react',
+  //     status:true
 
-    },
-    {
-      id:this.generateID(),
-      name:'di boi',
-      status:false
-    },
-    {
-      id:this.generateID(),
-      name:'ngu',
-      status:true
-    }
-  ] 
-  this.setState({
-    task:tasks
-  })
-   localStorage.setItem('tasks',JSON.stringify(tasks))
-  }
+  //   },
+  //   {
+  //     id:this.generateID(),
+  //     name:'di boi',
+  //     status:false
+  //   },
+  //   {
+  //     id:this.generateID(),
+  //     name:'ngu',
+  //     status:true
+  //   }
+  // ] 
+  // this.setState({
+  //   task:tasks
+  // })
+  //  localStorage.setItem('task',JSON.stringify(tasks))
+  // }
   s4(){
     return Math.floor((1+Math.random())*0x10000).toString(16).substring(1);
   }
@@ -44,14 +54,7 @@ class App extends React.Component {
     +this.s4()+'-'+this.s4()+'-'+this.s4()+'-'+this.s4()
     +'-'+this.s4()+'-'+this.s4()+'-'+this.s4()+'-'+this.s4()+'-'
   }
-  componentWillMount = ()=>{
-    if(localStorage && localStorage.getItem('tasks')){
-      let task = JSON.parse(localStorage.getItem('tasks'))
-       this.setState({
-         task:task
-       })
-    }
-  }
+ 
   handleDisplayForm = ()=>{
     this.setState({
       displayTaskForm:!this.state.displayTaskForm
@@ -68,35 +71,56 @@ class App extends React.Component {
     this.setState({
       task:task
     })
-     localStorage.setItem('tasks',JSON.stringify(task))
-  }
-  handleStatus = (id)=>{
-     let {task}= this.state
+     localStorage.setItem('task',JSON.stringify(task))
+  } 
+   findIndex= (id)=>{
+      let {task} = this.state ;
+      let result = -1
+      task.forEach((task,index)=>{
+        if(task.id===id){
+          return result= index
+        }
+      })
+      return result
+   }
+  handleStatus =(id)=>{
+     let {task} = this.state 
      let index = this.findIndex(id)
-      console.log(index)
-     if(index!==-1){
-       task[index].status = !task[index].status  
+     if(index!=-1){
+        task[index].status =!task[index].status
+      this.setState({
+        task:task
+      })
+      localStorage.setItem('task',JSON.stringify(task))
+     }
+     
+  }
+  handleDelete = (id)=>{
+    let {task} = this.state
+    let index = this.findIndex(id)
+     task.splice(index,1)
+     if(index!=-1){
+       task.splice(index)
        this.setState({
-       task: task
-           })
-           localStorage.setItem('tasks',JSON.stringify(task))
+         task:task
+       })
+       localStorage.setItem('task',JSON.stringify(task))
      }
   }
-  findIndex=(id)=>{
-    let {task} = this.state
-    let result = -1
-    task.forEach((task,index)=>{
-      if(task.id===id){
-       
-         return result =index
-      } 
-    })
-    return result;
+  handleUpdate = id =>{
+      let {task} = this.state ;
+      let index = this.findIndex(id)
+      if(index!==-1){
+         this.onCloseForm()
+         this.setState({
+           editing:task[index]
+         }) 
+      }
   }
   render() {
      const {task,displayTaskForm} = this.state ;
-     let elementtask  = displayTaskForm ? <TaskFrom onCloseForm={this.onCloseForm} onSubmit={this.onSubmit}
-     
+     let elementtask  = displayTaskForm ? <TaskFrom onCloseForm={this.onCloseForm} onSubmit={this.onSubmit} 
+             handleEditing={this.state.editing}  handleUpdate={this.handleUpdate}
      />  :''
     return (
       <div className="container">
@@ -108,24 +132,26 @@ class App extends React.Component {
           </div>
           <div className= {this.displayTaskForm ? "col-xs-8 col-sm-8 col-md-8 col-lg-8" : ''}>
             <button className="btn btn-primary" type="button"  onClick={this.handleDisplayForm}>
-              <span className="fa fa-plus mr-5"></span>Them cong viec
+              <span className="fa fa-plus mr-5"></span>   Them cong viechhh 
                </button>
                <button className="btn btn-warning" type="button" 
                onClick={this.onGenneratedata}>
               <span className="fa fa-plus mr-5"></span> Generrate data
                </button>
-            {/* search-sort */}
+             
             <div className="row mt-15">
               <Control/>
             </div>
           </div>
         </div>
       
-              <TaskList tasks={task} handleStatus = {this.handleStatus}  />
+              <TaskList tasks={task} handleStatus={this.handleStatus} handleDelete={this.handleDelete} handleUpdate={this.handleUpdate} />
         
       
       </div>
+     
     )
   }
+   
 }
 export default App

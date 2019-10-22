@@ -4,6 +4,7 @@ class TaskForm extends React.Component {
   constructor(props){
     super(props) ;
      this.state = {
+       id:'',
        name:'',
        status:false
      }
@@ -37,13 +38,34 @@ class TaskForm extends React.Component {
     })
     this.props.onCloseForm()
   }
+  
+  componentWillMount = ()=>{
+    if(this.props.handleEditing){
+       this.setState({
+         id: this.props.handleEditing.id,
+         name: this.props.handleEditing.name,
+         status: this.props.handleEditing.status
+       })
+    }
+      
+  }
+
+  componentWillReceiveProps = nextProps =>{
+     if(nextProps && nextProps.handleEditing){
+      this.setState({
+        id: nextProps.id,
+        name: nextProps.name,
+        status: nextProps.status
+      })
+     }
+  }
   render() {
 
     return (
        
             <div className="panel panel-warning">
               <div className="panel-title">
-                <h3>Them cong viec
+                <h3>   {this.props.editing ?  'them cong viec' : 'update cong viec' }
                 <span className="fa fa-times-circle text-right" 
                 onClick={this.onCloseFor}
                 
