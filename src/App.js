@@ -11,7 +11,13 @@ class App extends React.Component {
     this.state={
       task:[] ,//id uniqur , name , status,
       displayTaskForm:false,
-      editing: ''
+      editing: '',
+      filtername:'',
+      filterStatus:1,
+      filter:{
+        name:'',
+        status:-1
+      }
     }
     
   }
@@ -117,17 +123,39 @@ class App extends React.Component {
          }) 
       }
   }
+  onSearch =  (fileterName,fileterStatus)=>{
+    this.setState({
+      filterName:fileterName,
+      fileterStatus:fileterStatus
+    })
+    fileterStatus =  parseInt(fileterStatus,10) 
+    this.setState({
+      filter:{
+        name:fileterName,
+        status:fileterStatus
+      }
+    })
+  
+  }
   render() {
-     const {task,displayTaskForm} = this.state ;
+     const {task,displayTaskForm,filter} = this.state ;
      let elementtask  = displayTaskForm ? <TaskFrom onCloseForm={this.onCloseForm} onSubmit={this.onSubmit} 
              handleEditing={this.state.editing}  handleUpdate={this.handleUpdate}
-     />  :''
+     />  :'' ;
+      if(filter){
+        if(filter.name){
+          task.filter(task=>{
+            return  task.name.toLowerCase().indexOf(filter.name) !== -1;
+           
+          }) 
+           
+        }
+      }
     return (
       <div className="container">
         <div className="text-center"><h1>Quan ly cong viec</h1></div>
         <div className="row">
-          <div className={this.displayTaskForm ?  "col-xs-4 col-sm-4 col-md-4 col-lg-4" : ''} >
-               
+          <div className={this.displayTaskForm ?  "col-xs-4 col-sm-4 col-md-4 col-lg-4" : ''} >              
                {elementtask}
           </div>
           <div className= {this.displayTaskForm ? "col-xs-8 col-sm-8 col-md-8 col-lg-8" : ''}>
@@ -145,7 +173,7 @@ class App extends React.Component {
           </div>
         </div>
       
-              <TaskList tasks={task} handleStatus={this.handleStatus} handleDelete={this.handleDelete} handleUpdate={this.handleUpdate} />
+              <TaskList tasks={task} handleStatus={this.handleStatus} handleDelete={this.handleDelete} handleUpdate={this.handleUpdate} onSearch={this.onSearch}/>
         
       
       </div>

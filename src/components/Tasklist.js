@@ -1,10 +1,24 @@
 import React from 'react';
  
 import TaskItem from './TaskItem';
+import { thisTypeAnnotation } from '@babel/types';
  
 class TaskList extends React.Component {
- 
- 
+ constructor(props){
+   super(props)
+   this.state = {
+     filterName:'',
+     filterStatus:1
+   }
+ }
+ onChange = (event)=>{
+    let name = event.target.name
+    let value = event.target.value
+      this.props.onSearch(name === 'filterName' ? value : this.state.filterName, name  === 'filterStatus' ?  value : this.state.filterStatus)   
+      this.setState({
+      [name]:value
+    })
+ }
   render() {
       const {tasks,a} = this.props
       const element = tasks.map((task,index)=>{
@@ -34,12 +48,16 @@ class TaskList extends React.Component {
               type="text"
               className="form-control"
               name="filterName"
+              value={this.state.filterName}
+              onChange={this.onChange}
               />
             </td>
             <td>
               <select 
               className="form-control"
               name="filterStatus"
+              value={this.state.filterStatus}
+              onChange={this.onChange}
               >
                <option value={-1}>tat ca</option>
                <option value={0}>an</option>
