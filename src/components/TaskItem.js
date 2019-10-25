@@ -1,12 +1,7 @@
 import React from 'react';
  
 class TaskItem extends React.Component {
-  constructor(props){
-    super(props)
-    this.state={
-      lamnn:'ahihi'
-    }
-  }
+ 
   handleStatus = ()=>{
     this.props.handleStatus(this.props.task.id)
   }
@@ -18,7 +13,6 @@ class TaskItem extends React.Component {
   }
   render() {
       const {task,index} = this.props
-       
     return (
         <>
           <tr>

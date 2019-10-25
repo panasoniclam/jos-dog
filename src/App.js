@@ -9,7 +9,7 @@ class App extends React.Component {
   constructor(props){
     super(props)
     this.state={
-      task:[] ,//id uniqur , name , status,
+      // task:[] ,//id uniqur , name , status,
       displayTaskForm:false,
       editing: '',
       filtername:'',
@@ -21,14 +21,14 @@ class App extends React.Component {
     }
     
   }
-   componentDidMount = ()=>{
-    if(localStorage && localStorage.getItem('task')){
-       let tasks = JSON.parse(localStorage.getItem('task'))
-       this.setState({
-           task :tasks 
-       })
-    }
-  }
+  //  componentDidMount = ()=>{
+  //   if(localStorage && localStorage.getItem('task')){
+  //      let tasks = JSON.parse(localStorage.getItem('task'))
+  //      this.setState({
+  //          task :tasks 
+  //      })
+  //   }
+  // }
   // onGenneratedata = ()=>{
   //   let tasks =  [{
   //     id:this.generateID(),
@@ -52,14 +52,14 @@ class App extends React.Component {
   // })
   //  localStorage.setItem('task',JSON.stringify(tasks))
   // }
-  s4(){
-    return Math.floor((1+Math.random())*0x10000).toString(16).substring(1);
-  }
-  generateID(){
-    return this.s4()+'-'+this.s4()+'-'+this.s4()+'-'+this.s4()+'-'
-    +this.s4()+'-'+this.s4()+'-'+this.s4()+'-'+this.s4()
-    +'-'+this.s4()+'-'+this.s4()+'-'+this.s4()+'-'+this.s4()+'-'
-  }
+  // s4(){
+  //   return Math.floor((1+Math.random())*0x10000).toString(16).substring(1);
+  // }
+  // generateID(){
+  //   return this.s4()+'-'+this.s4()+'-'+this.s4()+'-'+this.s4()+'-'
+  //   +this.s4()+'-'+this.s4()+'-'+this.s4()+'-'+this.s4()
+  //   +'-'+this.s4()+'-'+this.s4()+'-'+this.s4()+'-'+this.s4()+'-'
+  // }
  
   handleDisplayForm = ()=>{
     this.setState({
@@ -69,16 +69,16 @@ class App extends React.Component {
   onCloseForm = ()=>{
      this.handleDisplayForm()
   }
-  onSubmit = (data)=>{
-    var {task }=  this.state 
-     console.log( typeof task)
-     data.id = this.generateID()
-     task.push(data)
-    this.setState({
-      task:task
-    })
-     localStorage.setItem('task',JSON.stringify(task))
-  } 
+  // onSubmit = (data)=>{
+  //   var {task }=  this.state 
+  //    console.log( typeof task)
+  //    data.id = this.generateID()
+  //    task.push(data)
+  //   this.setState({
+  //     task:task
+  //   })
+  //    localStorage.setItem('task',JSON.stringify(task))
+  // } 
    findIndex= (id)=>{
       let {task} = this.state ;
       let result = -1
@@ -137,6 +137,7 @@ class App extends React.Component {
     })
   
   }
+   
   render() {
      const {task,displayTaskForm,filter} = this.state ;
      let elementtask  = displayTaskForm ? <TaskFrom onCloseForm={this.onCloseForm} onSubmit={this.onSubmit} 
@@ -145,10 +146,8 @@ class App extends React.Component {
       if(filter){
         if(filter.name){
           task.filter(task=>{
-            return  task.name.toLowerCase().indexOf(filter.name) !== -1;
-           
-          }) 
-           
+            return  task.name.toLowerCase().indexOf(filter.name) !== -1;          
+          })            
         }
       }
     return (
@@ -173,7 +172,7 @@ class App extends React.Component {
           </div>
         </div>
       
-              <TaskList tasks={task} handleStatus={this.handleStatus} handleDelete={this.handleDelete} handleUpdate={this.handleUpdate} onSearch={this.onSearch}/>
+              <TaskList  tasks={task} handleStatus={this.handleStatus} handleDelete={this.handleDelete} handleUpdate={this.handleUpdate} onSearch={this.onSearch}/>
         
       
       </div>

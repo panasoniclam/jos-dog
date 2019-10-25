@@ -1,14 +1,13 @@
 import React from 'react';
  
 import TaskItem from './TaskItem';
-import { thisTypeAnnotation } from '@babel/types';
- 
+import {connect} from 'react-redux'
 class TaskList extends React.Component {
  constructor(props){
    super(props)
    this.state = {
      filterName:'',
-     filterStatus:1
+     filterStatus:1,
    }
  }
  onChange = (event)=>{
@@ -19,15 +18,21 @@ class TaskList extends React.Component {
       [name]:value
     })
  }
+   componentWillMount = ()=>{
+      let task  = JSON.parse(localStorage.getItem('task'))
+      this.setState({
+        task:task
+      })
+   }
   render() {
-      const {tasks,a} = this.props
-      const element = tasks.map((task,index)=>{
-                 return <TaskItem   key={tasks.id} index={index} task={task}
+      const { data} = this.props
+      const element = data.map((task,index)=>{
+                 return <TaskItem   key={data.id} index={index} task={task}
                  handleStatus={this.props.handleStatus}
                  handleDelete={this.props.handleDelete}
                  handleUpdate={this.props.handleUpdate}
                />
-      })
+                })
      return (
         <div className="row mt-15">
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -62,25 +67,22 @@ class TaskList extends React.Component {
                <option value={-1}>tat ca</option>
                <option value={0}>an</option>
                <option value={1}> kich hoat</option>
-
               </select>
             </td>
             <td></td>
           </tr>
-
-
             {/* <TaskItem/> */}
               { element }
-
-
-
         </tbody>
-
-      </table>
-           
+      </table>   
       </div>
       </div>
     )
   }
 }
-export default TaskList
+const mapStateToProps =  state=>{
+  return{
+    data:state.ReducerTaskList
+  }
+}
+export default connect(mapStateToProps,null)(TaskList)

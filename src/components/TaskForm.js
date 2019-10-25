@@ -1,5 +1,6 @@
 import React from 'react';
- 
+import {actionAddTask} from './../actions/index'
+import {connect} from 'react-redux'
 class TaskForm extends React.Component {
   constructor(props){
     super(props) ;
@@ -28,7 +29,9 @@ class TaskForm extends React.Component {
   
   handleSubmit = (e)=>{
     e.preventDefault()
-    this.props.onSubmit(this.state)
+    // this.props.onSubmit(this.state)
+    console.log(this.state)
+    this.props.Submit(this.state)
     this.onCloseFor()
   }
   CloseForm = ()=>{
@@ -39,25 +42,29 @@ class TaskForm extends React.Component {
     this.props.onCloseForm()
   }
   
-  componentWillMount = ()=>{
-    if(this.props.handleEditing){
-       this.setState({
-         id: this.props.handleEditing.id,
-         name: this.props.handleEditing.name,
-         status: this.props.handleEditing.status
-       })
-    }
+  // componentWillMount = ()=>{
+  //   if(this.props.handleEditing){
+  //      this.setState({
+  //        id: this.props.handleEditing.id,
+  //        name: this.props.handleEditing.name,
+  //        status: this.props.handleEditing.status
+  //      })
+  //   }
       
-  }
+  // }
 
-  componentWillReceiveProps = nextProps =>{
-     if(nextProps && nextProps.handleEditing){
-      this.setState({
-        id: nextProps.id,
-        name: nextProps.name,
-        status: nextProps.status
-      })
-     }
+  // componentWillReceiveProps = nextProps =>{
+  //    if(nextProps && nextProps.handleEditing){
+  //     this.setState({
+  //       id: nextProps.id,
+  //       name: nextProps.name,
+  //       status: nextProps.status
+  //     })
+  //    }
+  // }
+componentWillUpdate = ()=>{
+    const  {task} = this.props
+    console.log(task)
   }
   render() {
 
@@ -110,4 +117,18 @@ class TaskForm extends React.Component {
     )
   }
 }
-export default TaskForm
+const mapStateToProps = state=>{
+  console.log(state)
+  return{
+    task:state.ReducerTaskList
+  }
+}
+const mapDispatchProps = dispath=>{
+  return {
+    Submit:(task)=>{
+       
+      dispath(actionAddTask(task))
+  }
+}
+}
+export default connect(mapStateToProps,mapDispatchProps)(TaskForm)
