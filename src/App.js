@@ -6,28 +6,59 @@ import TaskList from './components/Tasklist'
 
  
 class App extends React.Component {
-  
-  generialdata = ()=>{
-
+  constructor(props){
+    super(props)
+    this.state = {
+      openForm:false
+    }
+  }
+  generialId = ()=>{
+      return this.s4()+this.s4()+"-"+this.s4()+this.s4()+"-"+this.s4()+this.s4()
+  }
+  generialData = ()=>{
+     let task = [
+       {
+         id:this.generialId(),
+         name:'di boi',
+         status:1
+       },  {
+        id:this.generialId(),
+        name:'hoc lap trinh',
+        status:0
+      },  {
+        id:this.generialId(),
+        name:'hoc golang',
+        status:-1
+      }
+     ]
+     return task
   }
   s4 = ()=>{
-    return Math.floor((Math.random())*0x1000).toString(16).substring(10)
+    return Math.floor((Math.random()+1)*0x10000).toString(16).substring(1)
+  }
+  handleOpenForm = ()=>{
+    this.setState({
+      openForm:true
+    })
+  }
+  handleCloseForm = (data)=>{
+     this.setState({
+       openForm:data
+     })
   }
   render() {
-    console.log(this.s4())
-  
-   
-  
+     let elementTask  =  this.state.openForm ? <TaskFrom handleCloseForm={this.handleCloseForm}/> :''
     return (
       <div className="container">
         <div className="text-center"><h1>Quan ly cong viec</h1></div>
         <div className="row">
           <div className=   "col-xs-4 col-sm-4 col-md-4 col-lg-4"  >              
               
-               <TaskFrom  />
+               {/* <TaskFrom  /> */}
+               {elementTask}
           </div>
           <div className=  "col-xs-8 col-sm-8 col-md-8 col-lg-8"  >
-            <button className="btn btn-primary" type="button"  >
+            <button className="btn btn-primary" type="button" onClick={this.handleOpenForm} >
               <span className="fa fa-plus mr-5"></span>   Them cong viec
                </button>
                <button className="btn btn-warning" type="button" 
@@ -41,7 +72,7 @@ class App extends React.Component {
           </div>
         </div>
       
-              <TaskList />
+              <TaskList  tasks={this.generialData}/>
         
       
       </div>

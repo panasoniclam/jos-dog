@@ -2,7 +2,10 @@ import React from 'react';
 import {actionAddTask} from './../actions/index'
 import {connect} from 'react-redux'
 class TaskForm extends React.Component {
-   
+ 
+  handleCloseForm = ()=>{
+     this.props.handleCloseForm(false)
+  }
   render() {
 
     return (
@@ -11,8 +14,7 @@ class TaskForm extends React.Component {
               <div className="panel-title">
                 <h3>    them cong viec 
                 <span className="fa fa-times-circle text-right" 
-               
-                
+                onClick={this.handleCloseForm}
                 ></span></h3>
               </div>
               <div className="panel-body">
@@ -40,7 +42,7 @@ class TaskForm extends React.Component {
                     <button type="submit" className="btn btn-warning">
                       <span className="fa fa-plus mr-5"></span> luu lai
                       </button>&nbsp;
-                      <button type="button" onClick={this.CloseForm}className="btn btn-danger">
+                      <button type="button" onClick={this.handleCloseForm}className="btn btn-danger">
                       <span className="fa fa-close mr-5"></span>  huy bo
                       </button> 
                     </div>
