@@ -4,15 +4,12 @@ class TaskItem extends React.Component {
  
  
   render() {
-    let task = {
-      id:1,
-      name:'ff',
-      status:1
-    }
+     let  {task,index} = this.props
+     
     return (
         <>
           <tr>
-            <td>{task.id}</td>
+            <td>{index+1}</td>
             <td>{task.name}</td>
             <td className="text-center">
               <button className=  "btn btn-warning" type="button" 

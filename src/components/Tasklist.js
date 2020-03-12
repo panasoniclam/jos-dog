@@ -3,34 +3,14 @@ import React from 'react';
 import TaskItem from './TaskItem';
 import {connect} from 'react-redux'
 class TaskList extends React.Component {
- constructor(props){
-   super(props)
-   this.state = {
-     filterName:'',
-     filterStatus:1,
-   }
- }
- onChange = (event)=>{
-    let name = event.target.name
-    let value = event.target.value
-      this.props.onSearch(name === 'filterName' ? value : this.state.filterName, name  === 'filterStatus' ?  value : this.state.filterStatus)   
-      this.setState({
-      [name]:value
-    })
- }
-   componentWillMount = ()=>{
-      let task  = JSON.parse(localStorage.getItem('task'))
-      this.setState({
-        task:task
-      })
-   }
+  componentDidUpdate = ()=>{
+    console.log('componentdidupdate')
+  }
   render() {
-      const { data} = this.props
-      const element = data.map((task,index)=>{
-                 return <TaskItem   key={data.id} index={index} task={task}
-                 handleStatus={this.props.handleStatus}
-                 handleDelete={this.props.handleDelete}
-                 handleUpdate={this.props.handleUpdate}
+    let {tasks}= this.props
+    console.log(typeof tasks)
+      const element = tasks.map((task,index)=>{
+                 return <TaskItem   task={task}  key={task.id} index={index}
                />
                 })
      return (
@@ -53,16 +33,14 @@ class TaskList extends React.Component {
               type="text"
               className="form-control"
               name="filterName"
-              value={this.state.filterName}
-              onChange={this.onChange}
+               
               />
             </td>
             <td>
               <select 
               className="form-control"
               name="filterStatus"
-              value={this.state.filterStatus}
-              onChange={this.onChange}
+             
               >
                <option value={-1}>tat ca</option>
                <option value={0}>an</option>

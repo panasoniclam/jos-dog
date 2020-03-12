@@ -9,7 +9,8 @@ class App extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      openForm:false
+      openForm:false,
+      tasks:[]
     }
   }
   generialId = ()=>{
@@ -46,8 +47,27 @@ class App extends React.Component {
        openForm:data
      })
   }
+
+  task = data=>{
+    let {tasks} = this.state
+    data.id = this.generialId()
+    tasks.push(data)
+     this.setState({
+       tasks:tasks
+     })
+     localStorage.setItem('tasks',JSON.stringify(tasks))
+  }
+  componentWillMount = ()=>{
+    if(localStorage && localStorage.getItem('tasks')){
+      let data = JSON.parse( localStorage.getItem('tasks'))
+      this.setState({
+        tasks:data
+      })
+    }
+  }
   render() {
-     let elementTask  =  this.state.openForm ? <TaskFrom handleCloseForm={this.handleCloseForm}/> :''
+    let data =  this.state.tasks
+     let elementTask  =  this.state.openForm ? <TaskFrom handleCloseForm={this.handleCloseForm} task={this.task}/> :''
     return (
       <div className="container">
         <div className="text-center"><h1>Quan ly cong viec</h1></div>
@@ -72,7 +92,7 @@ class App extends React.Component {
           </div>
         </div>
       
-              <TaskList  tasks={this.generialData}/>
+              <TaskList tasks={data}  />
         
       
       </div>
