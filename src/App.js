@@ -1,104 +1,58 @@
 import React from 'react';
 import './App.css'
-import  TaskFrom from './components/TaskForm'
-import Control from './components/Control'
-import TaskList from './components/Tasklist'
-
- 
+import PickerColor from  './components/pickerColor'
+import Setting from  './components/setting'
+import Reset from  './components/reset'
+import Result from './components/result'
 class App extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      openForm:false,
-      tasks:[]
+      color:"",
+      resetColor:false,
+      fontSize:10
     }
+
   }
-  generialId = ()=>{
-      return this.s4()+this.s4()+"-"+this.s4()+this.s4()+"-"+this.s4()+this.s4()
+  changeColor =(color)=>{
+     this.setState({
+       color:color
+     })
   }
-  generialData = ()=>{
-     let task = [
-       {
-         id:this.generialId(),
-         name:'di boi',
-         status:1
-       },  {
-        id:this.generialId(),
-        name:'hoc lap trinh',
-        status:0
-      },  {
-        id:this.generialId(),
-        name:'hoc golang',
-        status:-1
-      }
-     ]
-     return task
+  resetColor=(reset)=>{
+   this.setState({
+     resetColor:!reset
+   })
   }
-  s4 = ()=>{
-    return Math.floor((Math.random()+1)*0x10000).toString(16).substring(1)
+  componentWillReceiveProps(){
+    console.log("componentwill receive props app")
   }
-  handleOpenForm = ()=>{
+  chnage =()=>{
     this.setState({
-      openForm:true
+      resetColor:true,
+      fontSize:20
     })
   }
-  handleCloseForm = (data)=>{
-     this.setState({
-       openForm:data
-     })
-  }
-
-  task = data=>{
-    let {tasks} = this.state
-    data.id = this.generialId()
-    tasks.push(data)
-     this.setState({
-       tasks:tasks
-     })
-     localStorage.setItem('tasks',JSON.stringify(tasks))
-  }
-  componentWillMount = ()=>{
-    if(localStorage && localStorage.getItem('tasks')){
-      let data = JSON.parse( localStorage.getItem('tasks'))
-      this.setState({
-        tasks:data
-      })
-    }
-  }
   render() {
-    let data =  this.state.tasks
-     let elementTask  =  this.state.openForm ? <TaskFrom handleCloseForm={this.handleCloseForm} task={this.task}/> :''
+    
     return (
-      <div className="container">
-        <div className="text-center"><h1>Quan ly cong viec</h1></div>
+      <div className="container mt-50">
         <div className="row">
-          <div className=   "col-xs-4 col-sm-4 col-md-4 col-lg-4"  >              
-              
-               {/* <TaskFrom  /> */}
-               {elementTask}
-          </div>
-          <div className=  "col-xs-8 col-sm-8 col-md-8 col-lg-8"  >
-            <button className="btn btn-primary" type="button" onClick={this.handleOpenForm} >
-              <span className="fa fa-plus mr-5"></span>   Them cong viec
-               </button>
-               <button className="btn btn-warning" type="button" 
-            >
-              <span className="fa fa-plus mr-5"></span> Generrate data
-               </button>
-             
-            <div className="row mt-15">
-              <Control/>
-            </div>
-          </div>
+          <button onClick={this.chnage}>Click</button>
+          <PickerColor changeColor={this.changeColor}/>
+           <Setting resetColor={this.state.resetColor}  />
         </div>
-      
-              <TaskList tasks={data}  />
-        
-      
+        <div className="row">
+            <Reset    />
+        </div>
+        <div className="row">
+           <Result   resetColor={this.state.resetColor} />
+        </div>
+
       </div>
-     
+
     )
   }
-   
+
 }
 export default App

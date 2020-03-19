@@ -1,6 +1,5 @@
-import {combineReducers} from 'redux'
-import ReducerTaskList  from './reducer.tasklist'
+import {combineReducers} from 'redux' 
 const myReducers = combineReducers({
-           ReducerTaskList
+            
 })
 export default myReducers
