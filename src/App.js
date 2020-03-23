@@ -1,54 +1,103 @@
 import React from 'react';
 import './App.css'
-import PickerColor from  './components/pickerColor'
-import Setting from  './components/setting'
-import Reset from  './components/reset'
-import Result from './components/result'
+ 
+ 
 class App extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      color:"",
-      resetColor:false,
-      fontSize:10
+      color:["red","#111aaa","yellow","blue"],
+       reset: false,
+       colorDefault:"black",
+        // fontSize:15
     }
+  }
+  showColor = (color)=>{
+    if(this.state.reset===false){
+      return  {
+       backgroundColor:color,
+       padding:15,
+       margin:10
+     }
+    }
+    
+  }
+  changeColor = ( color)=>{  
+      if(this.state.reset===false){
+          this.setState((prevenvius)=>{
+          return  {
+            colorDefault:color
+          }
+          })  
+      } 
 
   }
-  changeColor =(color)=>{
-     this.setState({
-       color:color
-     })
-  }
-  resetColor=(reset)=>{
-   this.setState({
-     resetColor:!reset
-   })
-  }
-  componentWillReceiveProps(){
-    console.log("componentwill receive props app")
-  }
-  chnage =()=>{
-    this.setState({
-      resetColor:true,
-      fontSize:20
-    })
+
+   componentDidMount=()=>{
+    console.log(this.state)
+    
+   }
+  reset = () =>{
+      this.setState((previus)=>{
+        return {
+           reset:true
+        }
+      })
   }
   render() {
-    
+     let elementColor =  this.state.color.map((color,index)=>{
+       return  <span key={index} style={this.showColor(color)} onClick={()=>this.changeColor(color)}></span>
+     })
     return (
       <div className="container mt-50">
-        <div className="row">
-          <button onClick={this.chnage}>Click</button>
-          <PickerColor changeColor={this.changeColor}/>
-           <Setting resetColor={this.state.resetColor}  />
-        </div>
-        <div className="row">
-            <Reset    />
-        </div>
-        <div className="row">
-           <Result   resetColor={this.state.resetColor} />
-        </div>
+          <div className="row">
+             <div className="col-md-6 col-lg-6 col-xs-6 col-sm"> 
+                <div className="panel panel-warning">
+                  <div className="panel-heading">
+                    <h1 className="panel-title">colorSpicker</h1>
+                  </div>
+                  <div className="panel-body">
+                    {elementColor}
+                  </div>
+                </div>
+             </div>
+             <div className="col-md-6 col-lg-6 col-xs-6 col-sm"> 
+                <div className="panel panel-warning">
+                  <div className="panel-heading">
+                    <h1 className="panel-title">Setting FontSize</h1>
+                  </div>
+                  <div className="panel-body">
+                     15px
+                  </div>
+                </div>
+             </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+              <div className="panel panel-info">
+                <div className="panel-heading">
+                  <h1 className="panel-title">Result</h1>
+                </div>
+                <div className="panel-body">
+                  <span style={{color:this.state.colorDefault}}>lamnn8</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+              <div className="panel panel-info">
+                <div className="panel-heading">
+                  <h1 className="panel-title">reset</h1>
+                </div>
+                <div className="panel-body">
+                   <button className="btn btn-success" onClick={()=>this.reset()} >reset default
 
+                   </button>
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
 
     )
